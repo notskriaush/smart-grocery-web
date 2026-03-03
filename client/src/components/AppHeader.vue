@@ -86,38 +86,32 @@ import { useRouter } from 'vue-router'
 const { isLoggedIn } = useAuth()
 const router = useRouter()
 
+const props = defineProps({
+  showSearch: { type: Boolean, default: true },
+  basketCount: { type: Number, default: 0 }
+})
+
+const emit = defineEmits(['toggle-search', 'open-auth'])
+
 function handleProfileClick() {
   if (isLoggedIn.value) {
     router.push('/profile')
   } else {
-    emit('open-auth')  // opens AuthSidebar
+    emit('open-auth')
   }
 }
-
-const props = defineProps({
-  showSearch: {
-    type: Boolean,
-    default: true
-  },
-  basketCount: {
-    type: Number,
-    default: 0
-  }
-})
-
-const emit = defineEmits(['toggle-search', 'open-auth'])
 const scrolled = ref(false)
 const categoriesOpen = ref(false)
 const searchQuery = ref('')
 
 const categories = [
-  { name: 'Bakery', slug: 'bakery' },
-  { name: 'Dairy & Eggs', slug: 'dairy-eggs' },
-  { name: 'Pantry Items', slug: 'pantry-items' },
-  { name: 'Meat & Fish', slug: 'meat-fish' },
-  { name: 'Fruit & Veg', slug: 'fruit-veg' },
-  { name: 'Drinks', slug: 'drinks' },
-  { name: 'Frozen', slug: 'frozen' },
+  { name: 'Fresh Food',          slug: 'fresh-food' },
+  { name: 'Bakery',              slug: 'bakery' },
+  { name: 'Dairy & Eggs',        slug: 'dairy-eggs' },
+  { name: 'Meat & Seafood',      slug: 'meat-seafood' },
+  { name: 'Frozen Food',         slug: 'frozen-food' },
+  { name: 'Pantry Items',        slug: 'pantry-items' },
+  { name: 'Snacks & Beverages',  slug: 'snacks-beverages' },
 ]
 
 function toggleCategories() {

@@ -18,7 +18,7 @@
         <h2 class="auth-title">Welcome Back!</h2>
         <p class="auth-subtitle">
           Don't have an account?
-          <button class="auth-switch" @click="mode = 'signup'">Create a new one</button>
+          <button class="auth-switch" @click="switchMode('signup')">Create a new one</button>
         </p>
 
         <div class="form-group">
@@ -83,7 +83,7 @@
         <h2 class="auth-title">Sign Up</h2>
         <p class="auth-subtitle">
           Already have an account?
-          <button class="auth-switch" @click="mode = 'login'">Log in</button>
+          <button class="auth-switch" @click="switchMode('login')">Log in</button>
         </p>
 
         <div class="form-group">
@@ -131,6 +131,34 @@
           </div>
         </div>
 
+        <!-- Password strength — signup only -->
+<div v-if="showPasswordHints" class="password-hints">
+  <!-- Strength bar -->
+  <div class="strength-bar-wrap">
+    <div class="strength-bar-track">
+      <div
+        class="strength-bar-fill"
+        :style="{ width: passwordStrength.width, background: passwordStrength.color }"
+      />
+    </div>
+    <span class="strength-label" :style="{ color: passwordStrength.color }">
+      {{ passwordStrength.label }}
+    </span>
+  </div>
+  <!-- Rules checklist -->
+  <ul class="rules-list">
+    <li v-for="rule in passwordRules" :key="rule.label" class="rule-item" :class="{ 'rule-ok': rule.ok }">
+      <svg v-if="rule.ok" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <svg v-else width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <circle cx="12" cy="12" r="9"/>
+      </svg>
+      {{ rule.label }}
+    </li>
+  </ul>
+</div>
+
         <p v-if="errorMsg" class="auth-error">{{ errorMsg }}</p>
 
         <button class="btn btn-primary auth-btn" @click="handleSignup" :disabled="loading">
@@ -155,7 +183,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuth } from '@/composables/useAuth.js'
 import { authService } from '@/services/api.js'
 
@@ -167,14 +195,38 @@ const { setUser } = useAuth()
 const mode = ref('login')
 const email = ref('')
 const password = ref('')
-const username = ref('')          // renamed from 'name' to match backend
+const username = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
 const errorMsg = ref('')
 
+// --- Password validation ---
+const passwordRules = computed(() => [
+  { label: 'At least 8 characters',         ok: password.value.length >= 8 },
+  { label: 'One uppercase letter (A–Z)',     ok: /[A-Z]/.test(password.value) },
+  { label: 'One lowercase letter (a–z)',     ok: /[a-z]/.test(password.value) },
+  { label: 'One number (0–9)',               ok: /[0-9]/.test(password.value) },
+  { label: 'One special character (!@#...)', ok: /[^A-Za-z0-9]/.test(password.value) },
+])
+
+const passwordStrength = computed(() => {
+  const passed = passwordRules.value.filter(r => r.ok).length
+  if (passed <= 1) return { label: 'Weak',   color: '#ef4444', width: '20%' }
+  if (passed <= 2) return { label: 'Fair',   color: '#f97316', width: '40%' }
+  if (passed <= 3) return { label: 'Good',   color: '#eab308', width: '60%' }
+  if (passed <= 4) return { label: 'Strong', color: '#22c55e', width: '80%' }
+  return                  { label: 'Great',  color: '#16a34a', width: '100%' }
+})
+
+const passwordValid = computed(() => passwordRules.value.every(r => r.ok))
+const showPasswordHints = computed(() => mode.value === 'signup' && password.value.length > 0)
+
 function validate() {
   if (!email.value.trim())    { errorMsg.value = 'Email is required.'; return false }
   if (!password.value.trim()) { errorMsg.value = 'Password is required.'; return false }
+  if (mode.value === 'signup' && !passwordValid.value) {
+    errorMsg.value = 'Password does not meet all requirements.'; return false
+  }
   errorMsg.value = ''
   return true
 }
@@ -183,15 +235,12 @@ async function handleLogin() {
   if (!validate()) return
   loading.value = true
   try {
-    const user = await authService.login({
-      usernameOrEmail: email.value.trim(),
-      password: password.value
-    })
-    setUser(user)
+    const user = await authService.login({ usernameOrEmail: email.value.trim(), password: password.value })
+    await setUser(user)
     emit('login-success', user)
     emit('update:modelValue', false)
   } catch (e) {
-    errorMsg.value = e.message || 'Login failed.'
+    errorMsg.value = e.message || 'Login failed. Check your email and password.'
   } finally {
     loading.value = false
   }
@@ -202,16 +251,13 @@ async function handleSignup() {
   if (!validate()) return
   loading.value = true
   try {
-    const user = await authService.register({
-      username: username.value.trim(),
-      email: email.value.trim(),
-      password: password.value
-    })
-    setUser(user)
+    const user = await authService.register({ username: username.value.trim(), email: email.value.trim(), password: password.value })
+    await setUser(user)
     emit('login-success', user)
     emit('update:modelValue', false)
   } catch (e) {
-    errorMsg.value = e.message || 'Sign up failed.'
+    // Surface backend messages like "Username already exists"
+    errorMsg.value = e.message || 'Sign up failed. Please try again.'
   } finally {
     loading.value = false
   }
@@ -219,14 +265,18 @@ async function handleSignup() {
 
 function handleGoogle() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
-  if (!clientId) {
-    errorMsg.value = 'Google login not configured.'
-    return
-  }
+  if (!clientId) { errorMsg.value = 'Google login not configured.'; return }
   const redirectUri = `${window.location.origin}/auth/google/callback`
-  const scope = 'openid email profile'
-  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}&prompt=select_account`
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent('openid email profile')}&prompt=select_account`
   window.location.href = url
+}
+
+function switchMode(newMode) {
+  mode.value = newMode
+  errorMsg.value = ''
+  password.value = ''
+  email.value = ''
+  username.value = ''
 }
 </script>
 
@@ -275,6 +325,63 @@ function handleGoogle() {
 }
 .auth-close:hover {
   background: var(--color-grey-300);
+}
+
+/* Password strength */
+.password-hints {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: calc(-1 * var(--space-2));
+}
+
+.strength-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.strength-bar-track {
+  flex: 1;
+  height: 4px;
+  background: var(--color-grey-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.strength-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  min-width: 40px;
+  text-align: right;
+}
+
+.rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-400);
+  transition: color 0.2s ease;
+}
+
+.rule-ok {
+  color: #16a34a;
 }
 
 /* Form */
