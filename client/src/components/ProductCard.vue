@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="`/product/${product.id}`" class="product-card card">
     <div class="product-card__image">
-      <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" />
+      <img v-if="resolvedImage" :src="resolvedImage" :alt="product.name" />
       <div v-else class="img-placeholder">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
@@ -11,8 +11,8 @@
 
       <span class="product-card__tag badge" v-if="product.category">{{ product.category }}</span>
 
-      <button 
-        class="product-card__add btn btn-primary btn-sm" 
+      <button
+        class="product-card__add btn btn-primary btn-sm"
         @click.prevent="handleAdd(product)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
@@ -30,18 +30,33 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useBasket } from '@/composables/useBasket.js'
+import { getProductImage } from '@/composables/productImages.js'
 
-defineProps({
+const props = defineProps({
   product: { type: Object, required: true }
 })
 defineEmits(['add-to-basket'])
 
 const { addItem } = useBasket()
 
+/**
+ * Prefer the DB imageUrl. If it's missing or still points to the old broken
+ * Unsplash/Spoonacular hosts, fall back to our local Wikimedia map.
+ */
+const BROKEN_HOSTS = ['source.unsplash.com', 'spoonacular.com', 'api.spoonacular.com']
+
+const resolvedImage = computed(() => {
+  const url = props.product.imageUrl
+  if (url && !BROKEN_HOSTS.some(host => url.includes(host))) {
+    return url
+  }
+  return getProductImage(props.product.name)
+})
+
 function handleAdd(product) {
   addItem(product)
-  // still emit so parent views can react if needed
 }
 
 function formatPrice(price) {

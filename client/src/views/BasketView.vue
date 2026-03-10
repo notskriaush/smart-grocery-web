@@ -44,8 +44,8 @@
                     </div>
                   </div>
                   <div class="item-info">
-                    <p class="item-brand">{{ item.brand }}</p>
                     <p class="item-name">{{ item.name }}</p>
+                    <p class="item-brand">{{ item.brand }}</p>
                     <button class="item-remove" @click="removeItem(item.id)">Remove</button>
                   </div>
                 </div>
@@ -386,13 +386,13 @@ td {
   object-fit: contain;
   border-radius: var(--radius-sm);
 }
-.item-brand {
+.item-name {
   font-weight: var(--font-weight-semibold);
   color: var(--color-dark);
   font-size: var(--font-size-sm);
 }
-.item-name {
-  color: var(--color-grey-700);
+.item-brand {
+  color: var(--color-grey-500);
   font-size: var(--font-size-xs);
   line-height: var(--line-height-snug);
 }

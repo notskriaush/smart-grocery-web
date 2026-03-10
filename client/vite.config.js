@@ -11,8 +11,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // Proxies /api/* to Spring Boot during dev — no CORS issues
       '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      },
+      '/recipe-images': {
         target: 'http://localhost:8080',
         changeOrigin: true
       }

@@ -51,7 +51,7 @@ function syncToBackend() {
 // Persist to localStorage + sync to backend on every change
 watch(items, (val) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(val))
-  syncToBackend()
+  syncToBackend() //keeps server in sync
 }, { deep: true })
 
 export function useBasket() {
@@ -63,7 +63,7 @@ export function useBasket() {
    */
   async function loadFromBackend(userId) {
     try {
-      const res = await fetch(`${API_BASE}/users/${userId}/basket`)
+      const res = await fetch(`${API_BASE}/users/${userId}/basket`) //fetch from PUT
       if (!res.ok) return
       const backendItems = await res.json()
       if (Array.isArray(backendItems) && backendItems.length > 0) {

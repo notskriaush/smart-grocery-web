@@ -1,6 +1,7 @@
 /**
  * api.js — Central API service
  * Backend: Spring Boot @ http://localhost:8080/api
+ * Keeps all fetch logic in one place out of the views.
  */
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
@@ -56,7 +57,7 @@ export const productService = {
       sort,
       search
     })
-    return request(`/products?${params}`)
+    return request(`/products?${params}`) //calls GET /products
   },
 
   /** GET /products/search?q=chicken&page=0&size=12 */
