@@ -193,3 +193,4 @@ onMounted(fetchProducts)
   margin-bottom: var(--space-12);
 }
 </style>
+>>>>>>> a47a4a6 (fixed netlify forms detection)
