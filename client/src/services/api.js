@@ -1,10 +1,10 @@
 /**
  * api.js — Central API service
- * Backend: Spring Boot @ http://localhost:8080/api
+ * Backend: Spring Boot @ http://https://smart-grocery-web.onrender.com/api
  * Keeps all fetch logic in one place out of the views.
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://smart-grocery-web.onrender.com/api'
 
 async function request(path, options = {}) {
   const url = `${BASE_URL}${path}`

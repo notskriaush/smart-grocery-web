@@ -4,7 +4,7 @@
 import { ref, watch, computed } from 'vue'
 
 const STORAGE_KEY = 'sb_basket'
-const API_BASE = 'http://localhost:8080/api'
+const API_BASE = 'https://smart-grocery-web.onrender.com/api'
 
 function loadFromStorage() {
   try {

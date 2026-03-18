@@ -948,8 +948,15 @@ const PRODUCT_IMAGES = {
  * Falls back to null if the product isn't in the map.
  */
 export function getProductImage(name) {
-  return PRODUCT_IMAGES[name]?.main ?? null
+  if (!name) return null
+
+  const fileName = name
+    .toLowerCase()
+    .replaceAll(" ", "-")
+
+  return `/api/product-images/${fileName}.png`
 }
+
 
 /**
  * Returns all 4 images [main, extra1, extra2, extra3] for a product name.

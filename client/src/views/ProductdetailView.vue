@@ -28,7 +28,7 @@
           <div class="detail-img-main card">
             <img
               v-if="product.imageUrl"
-              :src="`http://localhost:8080${product.imageUrl}`"
+              :src="product.imageUrl"
               :alt="product.name"
               class="main-img"
               @click="lightboxOpen = true"
@@ -148,7 +148,7 @@
           </svg>
         </button>
         <img
-          :src="`http://localhost:8080${product.imageUrl}`"
+          :src="product.imageUrl"
           :alt="product.name"
           @click.stop
         />

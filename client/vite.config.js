@@ -12,11 +12,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://smart-grocery-web.onrender.com',
         changeOrigin: true
       },
       '/recipe-images': {
-        target: 'http://localhost:8080',
+        target: 'https://smart-grocery-web.onrender.com',
         changeOrigin: true
       }
     }

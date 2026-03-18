@@ -1,8 +1,9 @@
 <template>
   <RouterLink :to="`/product/${product.id}`" class="product-card card">
     <div class="product-card__image">
-      <img v-if="resolvedImage" :src="resolvedImage" :alt="product.name" />
+    <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" />
       <div v-else class="img-placeholder">
+
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
           <polyline points="21 15 16 10 5 21"/>
@@ -32,7 +33,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useBasket } from '@/composables/useBasket.js'
-import { getProductImage } from '@/composables/productImages.js'
+
 
 const props = defineProps({
   product: { type: Object, required: true }
@@ -45,15 +46,14 @@ const { addItem } = useBasket()
  * Prefer the DB imageUrl. If it's missing or still points to the old broken
  * Unsplash/Spoonacular hosts, fall back to our local Wikimedia map.
  */
-const BROKEN_HOSTS = ['source.unsplash.com', 'spoonacular.com', 'api.spoonacular.com']
 
 const resolvedImage = computed(() => {
-  const url = props.product.imageUrl
-  if (url && !BROKEN_HOSTS.some(host => url.includes(host))) {
-    return url
-  }
-  return getProductImage(props.product.name)
+  if (props.product.imageUrl) return props.product.imageUrl
+  const file = props.product.name.toLowerCase().replaceAll(" ", "-")
+  return `/api/product-images/${file}.png`
 })
+
+
 
 function handleAdd(product) {
   addItem(product)

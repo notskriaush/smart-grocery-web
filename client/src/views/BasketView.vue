@@ -36,7 +36,7 @@
               <td class="col-item">
                 <div class="item-cell">
                   <div class="item-img">
-                    <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.name" />
+                    <img v-if="item.imageUrl" :src="item.imageUrl.replace('/product-images','/product-images')" :alt="item.name"/>
                     <div v-else class="img-placeholder" style="width:48px;height:48px;border-radius:var(--radius-sm)">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:20px;height:20px;">
                         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -180,17 +180,24 @@ const compareData = ref(null)
 const loading = ref(false)
 
 async function fetchCompare() {
+  if (loading.value) return
   if (!basketItems.value.length) { compareData.value = null; return }
   loading.value = true
   try {
     const body = {
       items: basketItems.value.map(i => ({ productId: i.id, quantity: i.quantity }))
     }
-    const res = await fetch('http://localhost:8080/api/basket/compare', {
+    const res = await fetch('https://smart-grocery-web.onrender.com/api/basket/compare', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
+
+    if (!res.ok) {
+      console.error("Compare API error")
+      loading.value = false
+      return
+    }
     compareData.value = await res.json()
 
     if (compareData.value?.storeBreakdowns?.length) {
@@ -215,7 +222,8 @@ async function saveBasket() {
   const name = prompt('Name this shopping list:')
   if (!name?.trim()) return
 
-  const res = await fetch(`http://localhost:8080/api/users/${user.value.userId}/shopping-lists`)
+  const res = await fetch(`https://smart-grocery-web.onrender.com/api/users/${user.value.userId}/shopping-lists`)
+
   const lists = await res.json()
 
   const newList = {
@@ -226,7 +234,7 @@ async function saveBasket() {
   }
   lists.push(newList)
 
-  await fetch(`http://localhost:8080/api/users/${user.value.userId}/shopping-lists`, {
+  await fetch(`https://smart-grocery-web.onrender.com/api/users/${user.value.userId}/shopping-lists`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ lists })
@@ -251,7 +259,7 @@ async function generateRecipes() {
       items: basketItems.value.map(i => ({ productId: i.id, quantity: i.quantity }))
     }
 
-    const res = await fetch('http://localhost:8080/api/ai/recipes/from-basket', {
+    const res = await fetch('https://smart-grocery-web.onrender.com/api/ai/recipes/from-basket', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -264,7 +272,7 @@ async function generateRecipes() {
     const data = await res.json()
 
     if (data.error) {
-      recipeError.value = `Could not generate recipes: ${data.error}`
+      recipeError.value = 'Could not generate recipes: ${data.error}'
     } else if (Array.isArray(data.recipes)) {
       recipes.value = data.recipes
     } else {

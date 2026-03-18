@@ -109,27 +109,51 @@ const shoppingLists = ref([])
 const loadingLists = ref(false)
 
 async function fetchLists() {
-  if (!user.value) return
+  if (!user.value?.userId) return
+
   loadingLists.value = true
   try {
-    const res = await fetch(`http://localhost:8080/api/users/${user.value.userId}/shopping-lists`)
-    shoppingLists.value = await res.json()
+    const res = await fetch(`https://smart-grocery-web.onrender.com/api/users/${user.value.userId}/shopping-lists`)
+
+    if (!res.ok) {
+      shoppingLists.value = []
+      return
+    }
+
+    const data = await res.json()
+    console.log("SHOPPING LISTS FROM SERVER:", data)
+    shoppingLists.value = Array.isArray(data) ? data : []
   } catch (e) {
     console.error('Failed to load shopping lists', e)
+    shoppingLists.value = []
   } finally {
     loadingLists.value = false
   }
 }
 
+
 async function deleteList(listId) {
   if (!confirm('Delete this list?')) return
+  if (!user.value?.userId) return
+
   shoppingLists.value = shoppingLists.value.filter(l => l.id !== listId)
-  await fetch(`http://localhost:8080/api/users/${user.value.userId}/shopping-lists`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ lists: shoppingLists.value })
-  })
+
+  try {
+    const res = await fetch(`https://smart-grocery-web.onrender.com/api/users/${user.value.userId}/shopping-lists`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lists: shoppingLists.value })
+    })
+
+    if (!res.ok) {
+      throw new Error('Failed to delete shopping list')
+    }
+  } catch (e) {
+    console.error('Failed to delete shopping list', e)
+    await fetchLists()
+  }
 }
+
 
 function loadList(list) {
   // Load list items into basket
@@ -168,7 +192,7 @@ async function saveSettings() {
       email: settingsForm.value.email,
       ...(settingsForm.value.newPassword && { newPassword: settingsForm.value.newPassword })
     }
-    const res = await fetch(`http://localhost:8080/api/users/${user.value.userId}`, {
+    const res = await fetch(`https://smart-grocery-web.onrender.com/api/users/${user.value.userId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)

@@ -3,9 +3,9 @@
     <div class="container policy-page">
       <header class="policy-header">
         <h1 class="policy-title">Privacy Policy</h1>
-        <p class="policy-updated">Last Updated: February 25, 2026</p>
+        <p class="policy-updated">Last Updated: March 18, 2026</p>
         <p class="policy-intro">
-          This page explains what data we collect, why we collect it, and how we use it to provide our services.
+          This page explains what data we collect, why we collect it and how we use it to provide our services.
         </p>
       </header>
 
@@ -88,7 +88,26 @@
       </section>
 
       <section class="policy-section card">
-        <h2>4. Legal Basis for Processing (UK GDPR)</h2>
+        <h2>4. Cookies and Local Storage</h2>
+        <p>We use cookies and similar technologies (such as local storage) to improve your experience on our website. These technologies are used to:</p>
+        <ul>
+          <li>
+            Maintain your session (e.g., when you are logged in).
+          </li>
+          <li>
+            Remember your preferences.
+          </li>
+          <li>
+            Ensure the website functions properly.
+          </li>
+        </ul>
+        <p>
+          You can choose to accept or decline cookies when visiting our website. Some features may not function correctly without them.
+        </p>
+      </section>
+
+      <section class="policy-section card">
+        <h2>5. Legal Basis for Processing (UK GDPR)</h2>
         <p>Under the UK General Data Protection Regulation (UK GDPR), we process personal data based on:</p>
         <ul>
           <li>
@@ -108,24 +127,22 @@
       </section>
 
       <section class="policy-section card">
-        <h2>5. Data Sharing</h2>
+        <h2>6. Data Sharing</h2>
         <p>
           <strong>Important Note:</strong>
-          Smart Basket is currently a student project operating in a local development environment and is not yet
-          publicly hosted.
+          Smart Basket is an academic project developed for educational purposes. The application may be deployed and made accessible online.
         </p>
         <ul>
           <li>We do not sell, rent, or trade personal data to third parties.</li>
           <li>
-            If the website is deployed in the future, data may be processed by a hosting provider acting strictly as a
-            data processor under secure conditions.
+            If deployed, data may be processed by trusted third-party hosting providers (e.g., cloud infrastructure services) acting as data processors under appropriate safeguards.
           </li>
-          <li>We do not share data for marketing or advertising.</li>
+          <li>We do not use your data for marketing or advertising purposes.</li>
         </ul>
       </section>
 
       <section class="policy-section card">
-        <h2>6. Data Retention</h2>
+        <h2>7. Data Retention</h2>
         <p>We retain personal data only for as long as necessary:</p>
         <ul>
           <li><strong>Account Data:</strong> Stored for as long as the user account remains active.</li>
@@ -139,7 +156,7 @@
       </section>
 
       <section class="policy-section card">
-        <h2>7. Your Data Protection Rights</h2>
+        <h2>8. Your Data Protection Rights</h2>
         <p>Under UK GDPR, you have the following rights:</p>
         <ul>
           <li><strong>Right of Access:</strong> Request a copy of the data we hold about you.</li>
@@ -161,7 +178,7 @@
       </section>
 
       <section class="policy-section card">
-        <h2>8. Security</h2>
+        <h2>9. Security</h2>
         <p>
           We take reasonable, proportionate steps to protect personal data within the scope of this student project.
         </p>

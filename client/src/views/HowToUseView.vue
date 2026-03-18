@@ -83,45 +83,49 @@ const tabs = [
     label: '1. Build',
     title: '1. Start with your shopping list',
     description:
-      'Enter the products you need using the search bar. Add items one by one to your basket. You can search by product name (e.g. milk, pasta, chicken breast). Smartbasket builds your list in real time.',
+      'Enter the products you need using the search bar or browse by categories. You can quickly find items, filter them by price or name, and add them to your basket in seconds.Smartbasket builds your list in real time.',
     points: [
-      'Search any grocery product',
-      'Add items instantly',
-      'Edit quantities anytime',
+      'Search for any grocery product',
+      'Browse products by categories',
+      'Add items instantly and edit quantities anytime',
       'No account required to start'
     ]
   },
   {
     id: 'second',
     label: '2. Compare',
-    title: '2. We compare Tesco, ASDA, Lidl & ALDI',
+    title: '2. Compare prices across supermarkets',
     description:
-      'Once your basket is ready, Smartbasket automatically shows you where your basket costs less.',
+      'Once your basket is ready, Smartbasket shows you where your total costs less - instantly and transparently.',
     points: [
-      'Real price comparison',
-      'Clear "from lowest price" indication',
-      'Transparent store breakdown'
+      'Real price comparison across stores',
+      'Clear “from lowest price” indication',
+      'Transparent basket breakdown by supermark'
     ]
   },
   {
     id: 'third',
     label: '3. Optimize',
-    title: '3. Review alternatives & optimize',
+    title: '3. Optimize your basket with recipes & AI',
     description:
-      'Not happy with the total? You can explore alternative products to reduce your cost. Swap brands, compare sizes, or choose store-brand equivalents to optimise your basket.',
-    points: ['View cheaper alternatives', 'Compare price per unit']
+      'Explore our ready-made recipes and instantly add all ingredients to your basket in one click or use Smartbasket’s AI to generate new recipes based on the products you already have in the basket.',
+    points: [
+      'Browse curated recipes and add them directly to your basket', 
+      'Generate recipes with AI from your current basket',
+      'Complete your basket with missing ingredients instantly'
+    ]
   },
   {
     id: 'fourth',
     label: '4. Save',
-    title: '4. Choose where to shop & save',
+    title: '4. Choose the best option & save',
     description:
-      'Smartbasket shows which supermarket offers the lowest total for your basket. You can then decide where to shop.',
+      'Smartbasket helps you clearly see which supermarket is the most cost-effective, so you can shop with confidence.',
     points: [
-      'See total cost per supermarket',
-      'Identify the cheapest option',
-      'Save money on every trip',
-      'Shop smarter every time'
+      'Compare total basket cost per store',
+      'Identify the cheapest option instantly',
+      'Save money on every shopping trip',
+      'Make smarter decisions every time'
     ]
   }
 ]
