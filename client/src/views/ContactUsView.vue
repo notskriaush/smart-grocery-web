@@ -10,9 +10,9 @@
 
       <section class="contact-grid">
         <form
-          name="contact2"
+          name="contact"
           method="POST"
-          action="/success.html"
+          
           data-netlify="true"
           data-netlify-recaptcha="true"
           data-netlify-honeypot="bot-field"
@@ -20,7 +20,7 @@
           class="contact-form card"
         >
           <!-- important -->
-          <input type="hidden" name="form-name" value="contact2" />
+          <input type="hidden" name="form-name" value="contact" />
           <input type="hidden" name="bot-field" />
 
           <div class="form-row">
