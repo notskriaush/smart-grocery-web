@@ -70,6 +70,25 @@ Please wait 1–3 minutes for it to restart.
 
 ---
 
+## 📸 Screenshots
+
+### Home Page
+![Home](screenshots/home.png)
+
+### Basket
+![Basket](screenshots/basket.png)
+
+### AI Recipes
+![Recipes](screenshots/ai.png)
+
+### User page
+![Recipes](screenshots/user.png)
+
+### Recipes
+![Recipes](screenshots/recipes.png)
+
+---
+
 ## 🧱 Project Structure
 ```
 smart-grocery-web/
@@ -197,12 +216,6 @@ Content-Type: application/json
 
 - Backend: Me  
 - Frontend: Charreys https://github.com/cherriesc (Vue, UI/UX, integration)
-
----
-
-## 📸 Screenshots
-
-(Add screenshots here)
 
 ---
 
