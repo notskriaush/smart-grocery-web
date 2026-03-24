@@ -60,6 +60,30 @@ This project solves these problems by:
 
 ---
 
+## ▶️ Live Demo
+
+🔗 https://smartbasket-web.netlify.app
+
+⚠️ If the site was inactive (~15 minutes), the server may sleep.  
+Please wait 1–3 minutes for it to restart.
+
+---
+
+## 🧱 Project Structure
+```
+smart-grocery-web/
+│
+├── client/
+├── grocery-backend/
+│   ├── src/
+│   ├── pom.xml
+│   └── Dockerfile
+│
+├── docker-compose.yml
+└── README.md
+```
+---
+
 ## 🛠️ Tech Stack
 
 ### Backend
@@ -80,30 +104,6 @@ This project solves these problems by:
 - Docker  
 - Docker Compose  
 - .env configuration  
-
----
-
-## 🧱 Project Structure
-```
-smart-grocery-web/
-│
-├── client/
-├── grocery-backend/
-│   ├── src/
-│   ├── pom.xml
-│   └── Dockerfile
-│
-├── docker-compose.yml
-└── README.md
-```
----
-
-## ▶️ Live Demo
-
-🔗 https://smartbasket-web.netlify.app
-
-⚠️ If the site was inactive (~15 minutes), the server may sleep.  
-Please wait 1–3 minutes for it to restart.
 
 ---
 
