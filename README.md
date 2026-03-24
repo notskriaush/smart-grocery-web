@@ -73,15 +73,23 @@ Please wait 1–3 minutes for it to restart.
 ```
 smart-grocery-web/
 │
-├── client/
-├── grocery-backend/
+├── client/                 
+│   ├── src/
+│   ├── public/
+│   ├── vite.config.js
+│   └── package.json
+│
+├── grocery-backend/         
 │   ├── src/
 │   ├── pom.xml
-│   └── Dockerfile
+│   ├── Dockerfile
+│   └── test.http
 │
-├── docker-compose.yml
+├── docker-compose.yml       
+├── .gitignore
 └── README.md
 ```
+
 ---
 
 ## 🛠️ Tech Stack
