@@ -12,8 +12,9 @@
         <form
           name="contact"
           method="POST"
-          action="/success"
+          
           data-netlify="true"
+          data-netlify-recaptcha="true"
           data-netlify-honeypot="bot-field"
           enctype="multipart/form-data"
           class="contact-form card"
@@ -82,7 +83,7 @@
           <!-- FILE -->
           <div class="form-group">
             <label class="form-label">Attach file</label>
-            <input type="file" name="file" class="form-input" />
+            <input type="file" name="attachment" class="form-input" />
           </div>
 
           <!-- CAPTCHA -->

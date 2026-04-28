@@ -551,3 +551,4 @@ function switchMode(newMode) {
 .sidebar-enter-active, .sidebar-leave-active { transition: transform var(--transition-slow); }
 .sidebar-enter-from, .sidebar-leave-to { transform: translateX(100%); }
 </style>
+>>>>>>> a47a4a6 (fixed netlify forms detection)
